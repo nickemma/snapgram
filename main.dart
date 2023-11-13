@@ -1,11 +1,21 @@
-import 'package:SnapGram/model/post.dart';
-import 'package:SnapGram/request.dart';
+import 'dart:io';
 
-void main() async {
-  List<Post> posts = await Requests.getPosts();
+import 'package:dart_frog/dart_frog.dart';
+import 'package:server/data/models/chat.dart';
+import 'package:server/data/models/user.dart';
+import 'package:server/database.dart';
 
-  for (var post in posts) {
-    print(post.owner);
-    print(post.message);
-  }
+final mySql = MySql();
+final chats = <Chat>[];
+
+Future<HttpServer> run(Handler handler, InternetAddress ip, int port) {
+  return serve(handler.use(databaseHandler()), ip, port);
+}
+
+Middleware databaseHandler() {
+  return (handler) => handler.use(
+        provider<MySql>(
+          (context) => mySql,
+        ),
+      );
 }
