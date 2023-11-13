@@ -1,4 +1,11 @@
-void main() {
-  print('welcome to dart programming language');
-  print('Building first dart app Using Postman');
+import 'package:SnapGram/model/post.dart';
+import 'package:SnapGram/request.dart';
+
+void main() async {
+  List<Post> posts = await Requests.getPosts();
+
+  for (var post in posts) {
+    print(post.owner);
+    print(post.message);
+  }
 }
